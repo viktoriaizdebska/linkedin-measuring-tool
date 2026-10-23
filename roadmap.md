@@ -1,0 +1,15 @@
+# Roadmap
+- [x] Load Tab 1 from Lovable Cloud and add read-only version selection.
+- [x] Add inline edits, atomic new-version saving, required notes and cancel behavior.
+- [x] Add real latest KPI values with period labels and combined strategy timeline/events.
+- [x] Verify reads, edit/cancel, validation and unchanged history without creating versions or annotations.
+- [x] Enable Cloud and email/password allowlisted login, without profile data.
+- [x] Create the strategy, measurement, system and reserved-post schema with permissions and immutable history.
+- [x] Add atomic snapshot commits and current-snapshot view.
+- [x] Seed the allowed email, sources, periods, metrics and strategy version 1.
+- [x] Verify authentication, database permissions, rollback and rejected account_metrics updates; report created objects.
+- [x] Build the dashboard shell, theme toggle and three tabs.
+- [x] Add exact strategy content and nine KPI baselines from one data file.
+- [x] Add measurement and scheduled-post empty states.
+- [x] Verify desktop, phone, tab interactions and tests.- [x] Step 7: benchmarks, plan targets, Diagnosis tab, post tagging, calendar meeting review, spot-check and lead fixes.
+- [ ] Run calendar sync once — waiting for the Google Calendar connection.

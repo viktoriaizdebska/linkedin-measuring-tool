@@ -1,0 +1,90 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1791799755632,
+      "tag": "0000_linkedin_foundation",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791799955967,
+      "tag": "0001_foundation_invariant_tests",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791800520480,
+      "tag": "0002_atomic_strategy_versions",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1791801261448,
+      "tag": "0003_baseline_import_support",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1791801371365,
+      "tag": "0004_baseline_import_atomic_batch",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1791808409461,
+      "tag": "0005_measurement_views",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1791811024578,
+      "tag": "0006_import_pipeline_schema",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1791811968825,
+      "tag": "0007_fix_commit_run_payload_reference",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1791813614434,
+      "tag": "0008_diagnosis_benchmarks_calendar",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1791813810736,
+      "tag": "0009_current_leads_view",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1791815604080,
+      "tag": "0010_benchmark_drive_collector",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1791817432217,
+      "tag": "0011_scheduling_monitoring",
+      "breakpoints": true
+    }
+  ]
+}
