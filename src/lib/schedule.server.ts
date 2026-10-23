@@ -9,7 +9,7 @@ import { planDue, rangeText, viennaDate, type SPeriod, type SRun } from "./sched
 type DB = SupabaseClient<any, any, any>;
 export const OWNER = "viktoria@izdebska.com"; // the only recipient, ever
 const WORKFLOW = "measure-due-1";
-const APP_URL = "https://project--46031964-3b2a-40c6-9c74-0ae0462ae90f.lovable.app";
+const APP_URL = process.env["APP_URL"] ?? "";
 
 export async function loadPlanInput(db: DB, now: Date) {
   const periods = ((await db.from("periods").select("id,label,kind,start_date,end_date").eq("kind", "biweekly").order("start_date")).data ?? []) as SPeriod[];

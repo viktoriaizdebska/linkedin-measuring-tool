@@ -43,7 +43,7 @@ function DriveBenchmarks({ d, busy, go, check }: { d: DiagnosisData | undefined;
       </div>
       {!d.drive.connected ? (
         <div className="mt-3" role="status"><p className="kpi-missing">Drive not connected</p>
-          <p className="measure-note">To connect: in Lovable, open Connectors → Google Drive → Connect, sign in with viktoria@izdebska.com, and link it to this project. The tool only reads files named benchmark_snapshot_YYYY-MM-DD.csv in "LinkedIn Measuring Tool / Benchmarks". Then press "Check Drive now".</p></div>
+          <p className="measure-note">Not connected yet: the Google Drive connection is being moved from Lovable to a Google service account. Benchmark snapshots can still be uploaded by hand.</p></div>
       ) : (
         <p className="measure-note mt-2">Folder "LinkedIn Measuring Tool / Benchmarks", checked daily at 07:00 (Vienna) after the calendar. Last check: {run ? `${day(String(run["finished_at"] ?? run["started_at"]))} · ${run["status"]}` : "never"}.</p>
       )}
@@ -83,7 +83,7 @@ export function Step7DataRuns({ posts }: { posts: Posts }) {
         </div>
         {!d ? <p className="measure-note mt-3">Loading…</p> : !d.calendarConnected ? (
           <div className="mt-3" role="status"><p className="kpi-missing">Calendar not connected</p>
-            <p className="measure-note">To connect: in Lovable, open Connectors → Google Calendar → Connect, sign in with viktoria@izdebska.com (read-only access), and link it to this project. Then press "Check calendar now".</p></div>
+            <p className="measure-note">Not connected yet: the Google Calendar connection is being moved from Lovable to a Google service account. Meetings can still be logged by hand.</p></div>
         ) : (<>
           <p className="measure-note mt-2">Events inside your "room for luck" slot with a guest from outside your own addresses, since 28 September. Daily at 07:00 (Vienna). Last check: {d.integration?.["last_success_at"] ? day(String(d.integration["last_success_at"])) : "never"}.</p>
           {pending.length ? <div className="table-scroll mt-3"><table className="posts-table"><thead><tr><th>Date</th><th>Title</th><th>Domains</th><th>Suggested</th><th>Type</th><th>How they found you</th><th>Post</th><th /></tr></thead>

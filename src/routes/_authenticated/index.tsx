@@ -6,7 +6,6 @@ import {
   Moon,
   Sun,
   Target,
-  LogOut,
   Stethoscope,
 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -19,7 +18,6 @@ import { useQuery } from "@tanstack/react-query";
 import { measurementQuery, strategyQuery } from "@/lib/strategy-query";
 import { useQueryErrorResetBoundary } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
-import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/")({
   head: () => ({
@@ -186,20 +184,6 @@ function Index() {
           <span className="flex items-center gap-1.5">
             <LockKeyhole size={10} aria-hidden="true" />
             Personal workspace
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label="Sign out"
-              title="Sign out"
-              onClick={async () => {
-                await queryClient.cancelQueries();
-                queryClient.clear();
-                await supabase.auth.signOut();
-                await navigate({ to: "/auth", replace: true });
-              }}
-            >
-              <LogOut />
-            </Button>
           </span>
         </footer>
       </main>

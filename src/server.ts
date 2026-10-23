@@ -1,4 +1,5 @@
 import "./lib/error-capture";
+import { timingSafeEqual } from "node:crypto";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
@@ -44,8 +45,32 @@ function isH3SwallowedErrorBody(body: string): boolean {
   }
 }
 
+// Optional single password for the whole site (no accounts, no login page).
+// Set APP_PASSWORD on Railway to switch it on; leave it empty for an open site.
+// The scheduled job endpoint is excluded because it checks its own secret.
+function passwordGate(request: Request): Response | null {
+  if (new URL(request.url).pathname === "/healthz") return new Response("ok");
+  const password = process.env["APP_PASSWORD"];
+  if (!password) return null;
+  if (new URL(request.url).pathname.startsWith("/api/public/jobs/")) return null;
+  const header = request.headers.get("authorization") ?? "";
+  if (header.startsWith("Basic ")) {
+    const decoded = Buffer.from(header.slice(6), "base64").toString("utf8");
+    const given = decoded.slice(decoded.indexOf(":") + 1);
+    const a = Buffer.from(given),
+      b = Buffer.from(password);
+    if (a.length === b.length && timingSafeEqual(a, b)) return null;
+  }
+  return new Response("Password required", {
+    status: 401,
+    headers: { "WWW-Authenticate": 'Basic realm="LinkedIn Measuring Tool", charset="UTF-8"' },
+  });
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
+    const gate = passwordGate(request);
+    if (gate) return gate;
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);

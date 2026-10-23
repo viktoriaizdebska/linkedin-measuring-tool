@@ -1,22 +1,24 @@
-<!-- LOVABLE:BEGIN -->
-> [!IMPORTANT]
-> This project is connected to [Lovable](https://lovable.dev). Avoid rewriting
-> published git history — force pushing, or rebasing/amending/squashing commits
-> that are already pushed — as it rewrites history on Lovable's side and the
-> user will likely lose their project history.
->
-> Commits you push to the connected branch sync back to Lovable and show up in
-> the editor, so keep the branch in a working state.
-<!-- LOVABLE:END -->
+# LinkedIn Measuring Tool: rules for Claude
 
-## Application rules
+## Setup (since 24 Oct 2026)
+- Runs on Railway: one app service (Dockerfile, Node server from `bun run build`) and Postgres. No Lovable, no Supabase.
+- No login. Optional site-wide password via `APP_PASSWORD` (src/server.ts). `/healthz` and `/api/public/jobs/*` bypass it; the job endpoint checks `CRON_SECRET`.
+- Database access goes through `src/integrations/db/client.server.ts`, a small Supabase-compatible query API over Postgres. The app connects as a login user whose default role is `service_role` (db/prelude.sql), so the database functions' service-role checks still apply.
+- Schema changes: add a new numbered file in `drizzle/migrations/`. `scripts/migrate.mjs` applies pending files on every start. Additive changes only.
+- Not yet moved off Lovable: AI suggestions/summaries (`ai-json.server.ts`, `linkedin/ai-summary.server.ts`) and Google Calendar/Drive (`diagnosis-io.server.ts`, `benchmark-drive.server.ts`). They stay off until replaced (Claude API, Google service account).
+
+## Data rules (never break these)
+- Never update or delete measurement rows. Never weaken, disable or drop the immutability triggers.
+- No test data in the production database. Tests run locally, on staging, or in rolled-back transactions.
+- Secrets live only in Railway and GitHub settings, never in the repo.
+- LinkedIn is read-only for any automation.
+
+## Application rules (from the Lovable build)
+
 - Read Positioning & CTA exclusively through authenticated database reads; `src/data/strategy.ts` contains types only so static content cannot mask failed reads.
 - Save strategy edits through the security-invoker atomic version writer with a serialized highest-version check; copy baselines and metadata server-side to preserve immutable history.
 - Never create strategy versions or annotations during automated checks; use read-only database assertions and edit/cancel UI verification because only the user may add history.
 - Keep the three dashboard views as accessible client-side tabs at `/`; they are views of one private workspace, not separate public content pages.
-- Use Lovable Cloud for private email/password accounts and database storage; measurement displays remain empty until real runs are connected.
-- Disable direct Cloud signup and mediate account invitations and password login through a server function that checks allowed_users before authentication; this prevents public account creation and enforces the live allowlist.
-- Use the pathless authenticated layout at `/` and a public `/auth` entry page; all dashboard data access is also allowlist-scoped by RLS.
 - Preserve immutable strategy and measurement history with always-enabled triggers; only the service role can call the atomic snapshot writer.
 - Preserve explicit text primary keys on catalog tables and posts as requested; all other tables use UUID primary keys.
 - Include not yet measured in KPI kind constraints to preserve the newsletter definition from the strategy source.
