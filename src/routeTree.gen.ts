@@ -11,7 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as RestoreRouteImport } from './routes/restore'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
+import { Route as ApiRestoreRouteImport } from './routes/api/restore'
 import { Route as ApiPublicJobsCalendarSyncRouteImport } from './routes/api/public/jobs/calendar-sync'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
@@ -23,10 +25,20 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RestoreRoute = RestoreRouteImport.update({
+  id: '/restore',
+  path: '/restore',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const ApiRestoreRoute = ApiRestoreRouteImport.update({
+  id: '/api/restore',
+  path: '/api/restore',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicJobsCalendarSyncRoute =
   ApiPublicJobsCalendarSyncRouteImport.update({
@@ -38,10 +50,14 @@ const ApiPublicJobsCalendarSyncRoute =
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/auth': typeof AuthRoute
+  '/restore': typeof RestoreRoute
+  '/api/restore': typeof ApiRestoreRoute
   '/api/public/jobs/calendar-sync': typeof ApiPublicJobsCalendarSyncRoute
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
+  '/restore': typeof RestoreRoute
+  '/api/restore': typeof ApiRestoreRoute
   '/': typeof AuthenticatedIndexRoute
   '/api/public/jobs/calendar-sync': typeof ApiPublicJobsCalendarSyncRoute
 }
@@ -49,18 +65,32 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/restore': typeof RestoreRoute
+  '/api/restore': typeof ApiRestoreRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/api/public/jobs/calendar-sync': typeof ApiPublicJobsCalendarSyncRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/api/public/jobs/calendar-sync'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/restore'
+    | '/api/restore'
+    | '/api/public/jobs/calendar-sync'
   fileRoutesByTo: FileRoutesByTo
-  to: '/auth' | '/' | '/api/public/jobs/calendar-sync'
+  to:
+    | '/auth'
+    | '/restore'
+    | '/api/restore'
+    | '/'
+    | '/api/public/jobs/calendar-sync'
   id:
     | '__root__'
     | '/_authenticated'
     | '/auth'
+    | '/restore'
+    | '/api/restore'
     | '/_authenticated/'
     | '/api/public/jobs/calendar-sync'
   fileRoutesById: FileRoutesById
@@ -68,6 +98,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  RestoreRoute: typeof RestoreRoute
+  ApiRestoreRoute: typeof ApiRestoreRoute
   ApiPublicJobsCalendarSyncRoute: typeof ApiPublicJobsCalendarSyncRoute
 }
 
@@ -87,12 +119,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/restore': {
+      id: '/restore'
+      path: '/restore'
+      fullPath: '/restore'
+      preLoaderRoute: typeof RestoreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/': {
       id: '/_authenticated/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/restore': {
+      id: '/api/restore'
+      path: '/api/restore'
+      fullPath: '/api/restore'
+      preLoaderRoute: typeof ApiRestoreRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/public/jobs/calendar-sync': {
       id: '/api/public/jobs/calendar-sync'
@@ -118,6 +164,8 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  RestoreRoute: RestoreRoute,
+  ApiRestoreRoute: ApiRestoreRoute,
   ApiPublicJobsCalendarSyncRoute: ApiPublicJobsCalendarSyncRoute,
 }
 export const routeTree = rootRouteImport
