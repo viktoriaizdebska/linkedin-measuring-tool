@@ -2,7 +2,7 @@
 
 ## Setup (since 24 Oct 2026)
 - Runs on Railway: one app service (Dockerfile, Node server from `bun run build`) and Postgres. No Lovable, no Supabase.
-- No login. Optional site-wide password via `APP_PASSWORD` (src/server.ts). `/healthz` and `/api/public/jobs/*` bypass it; the job endpoint checks `CRON_SECRET`.
+- No login. Optional site-wide password (password-only form, cookie) via `APP_PASSWORD` (src/server.ts). `/healthz` and `/api/public/jobs/*` bypass it; the job endpoint checks `CRON_SECRET`.
 - Database access goes through `src/integrations/db/client.server.ts`, a small Supabase-compatible query API over Postgres. The app connects as a login user whose default role is `service_role` (db/prelude.sql), so the database functions' service-role checks still apply.
 - Schema changes: add a new numbered file in `drizzle/migrations/`. `scripts/migrate.mjs` applies pending files on every start. Additive changes only.
 - Not yet moved off Lovable: AI suggestions/summaries (`ai-json.server.ts`, `linkedin/ai-summary.server.ts`) and Google Calendar/Drive (`diagnosis-io.server.ts`, `benchmark-drive.server.ts`). They stay off until replaced (Claude API, Google service account).
